@@ -78,6 +78,49 @@ namespace CRUDSederhana
 
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            LoadData();
+        }
+        private void ClearForm()
+        {
+            txtNIM.Clear();
+            txtNAMA.Clear();
+            txtEMAIL.Clear();
+            txtTELEPON.Clear();
+            txtALAMAT.Clear();
+
+            txtNIM.Focus();
+        }
+
+        private void LoadData()
+        {
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    try
+                    {
+                        conn.Open();
+                        string query = "SELECT NIM AS [NIM], Nama, Email, Telepon, Alamat FROM Mahasiswa";
+                        SqlDataAdapter da = new SqlDataAdapter(query, conn);
+                        DataTable dt = new DataTable();
+                        da.Fill(dt);
+
+                        dgvMahasiswa.AutoGenerateColumns = true;
+                        dgvMahasiswa.DataSource = dt;
+
+                        ClearForm();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message, "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    }
+                }
+            }
+        }
+        
+
     }
 }
 
